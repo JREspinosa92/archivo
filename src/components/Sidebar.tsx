@@ -1,13 +1,28 @@
+'use client';
+
 import React from 'react';
 import { LayoutDashboard, Users, ClipboardList, FileText, Settings, LogOut, School } from 'lucide-react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { supabase } from '@/lib/supabase/client';
 
 export function Sidebar() {
+  const pathname = usePathname();
+  
+  const handleSignOut = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error('Error al cerrar sesión:', error.message);
+    }
+    window.location.href = '/login';
+  };
+  
   const menuItems = [
-    { icon: LayoutDashboard, label: 'Dashboard', href: '/', active: true },
+    { icon: LayoutDashboard, label: 'Dashboard', href: '/' },
     { icon: ClipboardList, label: 'Captura', href: '/captura' },
     { icon: Users, label: 'Alumnos', href: '/alumnos' },
     { icon: FileText, label: 'Reportes', href: '/reportes' },
+    { icon: Settings, label: 'Configuración', href: '/configuracion' },
   ];
 
   return (
@@ -23,20 +38,23 @@ export function Sidebar() {
       </div>
 
       <nav className="flex-1 px-4 mt-4">
-        {menuItems.map((item) => (
-          <Link
-            key={item.label}
-            href={item.href}
-            className={`flex items-center gap-3 px-4 py-3 rounded-xl mb-1 transition-all group ${
-              item.active 
-                ? 'bg-[#8c1c13] text-white shadow-lg shadow-red-900/20' 
-                : 'hover:bg-slate-800 hover:text-white'
-            }`}
-          >
-            <item.icon className={`w-5 h-5 ${item.active ? 'text-white' : 'text-slate-500 group-hover:text-red-400'}`} />
-            <span className="font-medium text-sm">{item.label}</span>
-          </Link>
-        ))}
+        {menuItems.map((item) => {
+          const isActive = pathname === item.href;
+          return (
+            <Link
+              key={item.label}
+              href={item.href}
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl mb-1 transition-all group ${
+                isActive 
+                  ? 'bg-[#8c1c13] text-white shadow-lg shadow-red-900/20' 
+                  : 'hover:bg-slate-800 hover:text-white'
+              }`}
+            >
+              <item.icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-slate-500 group-hover:text-red-400'}`} />
+              <span className="font-medium text-sm">{item.label}</span>
+            </Link>
+          );
+        })}
       </nav>
 
       <div className="p-4 mt-auto">

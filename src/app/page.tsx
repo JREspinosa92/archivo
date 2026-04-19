@@ -2,10 +2,22 @@
 
 import React from 'react';
 import { Sidebar } from '@/components/Sidebar';
-import { 
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, 
-  LineChart, Line, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar 
-} from 'recharts';
+import dynamic from 'next/dynamic';
+
+// Importación dinámica para evitar errores de hidratación y dimensiones en SSR
+const ResponsiveContainer = dynamic(() => import('recharts').then(m => m.ResponsiveContainer), { ssr: false });
+const BarChart = dynamic(() => import('recharts').then(m => m.BarChart), { ssr: false });
+const Bar = dynamic(() => import('recharts').then(m => m.Bar), { ssr: false });
+const XAxis = dynamic(() => import('recharts').then(m => m.XAxis), { ssr: false });
+const YAxis = dynamic(() => import('recharts').then(m => m.YAxis), { ssr: false });
+const CartesianGrid = dynamic(() => import('recharts').then(m => m.CartesianGrid), { ssr: false });
+const Tooltip = dynamic(() => import('recharts').then(m => m.Tooltip), { ssr: false });
+const RadarChart = dynamic(() => import('recharts').then(m => m.RadarChart), { ssr: false });
+const PolarGrid = dynamic(() => import('recharts').then(m => m.PolarGrid), { ssr: false });
+const PolarAngleAxis = dynamic(() => import('recharts').then(m => m.PolarAngleAxis), { ssr: false });
+const PolarRadiusAxis = dynamic(() => import('recharts').then(m => m.PolarRadiusAxis), { ssr: false });
+const Radar = dynamic(() => import('recharts').then(m => m.Radar), { ssr: false });
+
 import { TrendingUp, Users, School, Award, ArrowUpRight, ArrowDownRight } from 'lucide-react';
 
 const dataGrados = [
@@ -38,10 +50,16 @@ export default function DashboardPage() {
             <h1 className="text-3xl font-bold text-slate-800">Panel de Control Escolar</h1>
           </div>
           <div className="flex gap-3">
-            <button className="px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-semibold text-slate-600 hover:bg-slate-50 transition-colors">
+            <button 
+              onClick={() => window.print()}
+              className="px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-semibold text-slate-600 hover:bg-slate-50 transition-colors"
+            >
               Descargar PDF
             </button>
-            <button className="px-4 py-2 bg-[#8c1c13] text-white rounded-lg text-sm font-semibold shadow-lg shadow-red-900/10 hover:bg-[#6e160f] transition-all">
+            <button 
+              onClick={() => window.location.href = '/captura'}
+              className="px-4 py-2 bg-[#8c1c13] text-white rounded-lg text-sm font-semibold shadow-lg shadow-red-900/10 hover:bg-[#6e160f] transition-all"
+            >
               Nueva Captura
             </button>
           </div>
@@ -65,8 +83,8 @@ export default function DashboardPage() {
                 <option>Ciclo 2023-2024</option>
               </select>
             </div>
-            <div className="h-80 w-full">
-              <ResponsiveContainer width="100%" height="100%">
+            <div className="w-full h-[320px]">
+              <ResponsiveContainer width="100%" height={320}>
                 <BarChart data={dataGrados} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
                   <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill: '#94a3b8', fontSize: 12}} dy={10} />
@@ -90,8 +108,8 @@ export default function DashboardPage() {
                 <div className="flex items-center gap-1.5"><div className="w-2 h-2 rounded-full bg-slate-400"></div> Meta Estatal</div>
               </div>
             </div>
-            <div className="h-80 w-full">
-              <ResponsiveContainer width="100%" height="100%">
+            <div className="w-full h-[320px]">
+              <ResponsiveContainer width="100%" height={320}>
                 <RadarChart cx="50%" cy="50%" outerRadius="80%" data={dataZona}>
                   <PolarGrid stroke="#f1f5f9" />
                   <PolarAngleAxis dataKey="subject" tick={{fill: '#94a3b8', fontSize: 10}} />
