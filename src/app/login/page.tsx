@@ -3,13 +3,16 @@
 import React, { useState } from 'react';
 import { Shield, Mail, LogIn, School, Chrome, UserPlus } from 'lucide-react';
 import { supabase } from '@/lib/supabase/client';
+import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
+  const router = useRouter();
+
   const handleGoogleLogin = async () => {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
+        redirectTo: `${window.location.origin}/archivo/auth/callback`,
       },
     });
 
