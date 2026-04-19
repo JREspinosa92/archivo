@@ -1,13 +1,10 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  output: 'export', // Necesario para GitHub Pages
-  basePath: '/archivo', // El nombre de tu repositorio
-  assetPrefix: '/archivo', // Asegura que el CSS y JS carguen bien
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  output: 'export',
+  basePath: '/archivo',
   images: {
-    unoptimized: true, // GitHub Pages no soporta optimización de imágenes en el servidor
+    unoptimized: true,
   },
-  // Desactivamos el trailingSlash para evitar problemas con las rutas en GitHub Pages
   trailingSlash: true,
 };
 
